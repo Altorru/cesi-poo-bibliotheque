@@ -18,9 +18,10 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
     e.preventDefault();
     if (title && author && year) {
       onSubmit({
-        title,
-        author,
-        year: parseInt(year, 10)
+          title,
+          author,
+          year: parseInt(year, 10),
+          accessible: false
       });
       // Reset form
       setTitle("");

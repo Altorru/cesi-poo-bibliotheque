@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import { BookComponent, Book } from "./book";
@@ -17,6 +17,7 @@ interface LibraryComponentProps {
   onReturn?: (bookId: number) => void;
   onAddBook?: (book: Omit<Book, "id" | "owned_by">) => void;
   onDelete?: (bookId: number) => void;
+  onAccessible?: (bookId: number) => void;
 }
 
 export const LibraryComponent: React.FC<LibraryComponentProps> = ({
@@ -26,6 +27,7 @@ export const LibraryComponent: React.FC<LibraryComponentProps> = ({
   onReturn,
   onAddBook,
   onDelete,
+  onAccessible,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -35,14 +37,14 @@ export const LibraryComponent: React.FC<LibraryComponentProps> = ({
     }
   };
 
-  const availableBooks = library.books.filter(book => !book.owned_by);
-  const borrowedBooks = library.books.filter(book => book.owned_by);
+  const availableBooks = library.books.filter((book) => !book.owned_by);
+  const borrowedBooks = library.books.filter((book) => book.owned_by);
 
   return (
     <>
-      <Modal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
         onSubmit={handleAddBook}
       />
       <div className="w-full">
@@ -57,7 +59,7 @@ export const LibraryComponent: React.FC<LibraryComponentProps> = ({
             Ajouter un livre
           </button>
         </div>
-        
+
         {/* Livres disponibles */}
         <div className="mb-8">
           <h2 className="text-2xl font-semibold mb-4 text-green-700">
@@ -73,6 +75,7 @@ export const LibraryComponent: React.FC<LibraryComponentProps> = ({
                   onBorrow={onBorrow}
                   onReturn={onReturn}
                   onDelete={onDelete}
+                  onAccessible={onAccessible}
                 />
               ))}
             </div>
@@ -96,6 +99,7 @@ export const LibraryComponent: React.FC<LibraryComponentProps> = ({
                   onBorrow={onBorrow}
                   onReturn={onReturn}
                   onDelete={onDelete}
+                  onAccessible={onAccessible}
                 />
               ))}
             </div>

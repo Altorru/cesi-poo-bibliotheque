@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Owner } from "./owner";
+import { access } from "fs";
 
 export enum BookAction {
   BORROW = "BORROW",
@@ -14,6 +15,7 @@ export interface Book {
   author: string;
   year: number;
   owned_by?: null | Owner;
+  accessible: boolean;
 }
 
 // Factory function to create Book objects
@@ -22,8 +24,9 @@ export const Book = (
   title: string,
   author: string,
   year: number,
+  accessible: boolean = true,
 ): Book => {
-  return { id, title, author, year };
+  return { id, title, author, year, accessible };
 };
 
 interface BookComponentProps {
@@ -32,6 +35,7 @@ interface BookComponentProps {
   onBorrow?: (bookId: number, owner: Owner) => void;
   onReturn?: (bookId: number) => void;
   onDelete?: (bookId: number) => void;
+  onAccessible?: (bookId: number) => void;
 }
 
 export const BookComponent: React.FC<BookComponentProps> = ({
@@ -40,6 +44,7 @@ export const BookComponent: React.FC<BookComponentProps> = ({
   onBorrow,
   onReturn,
   onDelete,
+  onAccessible,
 }) => {
   const [showOwnerSelect, setShowOwnerSelect] = useState(false);
 
@@ -57,13 +62,18 @@ export const BookComponent: React.FC<BookComponentProps> = ({
   };
 
   const handleDelete = () => {
-    if (onDelete && confirm('Êtes-vous sûr de vouloir supprimer "' + book.title + '" ?')) {
+    if (
+      onDelete &&
+      confirm('Êtes-vous sûr de vouloir supprimer "' + book.title + '" ?')
+    ) {
       onDelete(book.id);
     }
   };
 
   return (
-    <div className="bg-white p-4 rounded shadow mb-4 text-black">
+    <div
+      className={`bg-white border-4 ${book.accessible ? "border-green-500" : "border-red-500"} p-4 rounded shadow mb-4 text-black`}
+    >
       <div className="flex justify-between items-center mb-2">
         <h2 className="text-xl text-center font-bold">{book.title}</h2>
         <button
@@ -99,7 +109,13 @@ export const BookComponent: React.FC<BookComponentProps> = ({
       )}
 
       {!book.owned_by && !showOwnerSelect && (
-        <div className="flex justify-end">
+        <div className="flex justify-between">
+          <button
+            className="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 cursor-pointer"
+            onClick={() => onAccessible && onAccessible(book.id)}
+          >
+            Accessible
+          </button>
           <button
             className="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 cursor-pointer"
             onClick={() => setShowOwnerSelect(true)}
