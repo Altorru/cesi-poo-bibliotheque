@@ -55,23 +55,6 @@ export default function Home() {
         onReturn={returnBook}
         onAddBook={addBook}
       />
-      
-      <div className="mt-12">
-        <h2 className="text-2xl text-center mb-6">Propriétaires et leurs livres</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {owners.map(owner => {
-            const ownerBooks = books.filter(book => book.owned_by?.id === owner.id);
-            return (
-              <OwnerComponent 
-                key={owner.id} 
-                owner={owner} 
-                books={ownerBooks}
-                onReturn={returnBook}
-              />
-            );
-          })}
-        </div>
-      </div>
     </div>
   );
 }

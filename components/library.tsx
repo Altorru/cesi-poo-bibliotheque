@@ -33,6 +33,9 @@ export const LibraryComponent: React.FC<LibraryComponentProps> = ({
     }
   };
 
+  const availableBooks = library.books.filter(book => !book.owned_by);
+  const borrowedBooks = library.books.filter(book => book.owned_by);
+
   return (
     <>
       <Modal 
@@ -52,16 +55,49 @@ export const LibraryComponent: React.FC<LibraryComponentProps> = ({
             Ajouter un livre
           </button>
         </div>
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {library.books.map((book) => (
-            <BookComponent
-              key={book.id}
-              book={book}
-              owners={owners}
-              onBorrow={onBorrow}
-              onReturn={onReturn}
-            />
-          ))}
+        
+        {/* Livres disponibles */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4 text-green-700">
+            Livres disponibles ({availableBooks.length})
+          </h2>
+          {availableBooks.length > 0 ? (
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {availableBooks.map((book) => (
+                <BookComponent
+                  key={book.id}
+                  book={book}
+                  owners={owners}
+                  onBorrow={onBorrow}
+                  onReturn={onReturn}
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500 italic">Aucun livre disponible</p>
+          )}
+        </div>
+
+        {/* Livres empruntés */}
+        <div>
+          <h2 className="text-2xl font-semibold mb-4 text-orange-700">
+            Livres empruntés ({borrowedBooks.length})
+          </h2>
+          {borrowedBooks.length > 0 ? (
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {borrowedBooks.map((book) => (
+                <BookComponent
+                  key={book.id}
+                  book={book}
+                  owners={owners}
+                  onBorrow={onBorrow}
+                  onReturn={onReturn}
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500 italic">Aucun livre emprunté</p>
+          )}
         </div>
       </div>
     </>
