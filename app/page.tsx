@@ -33,6 +33,16 @@ export default function Home() {
     ));
   };
 
+  const addBook = (bookData: Omit<Book, "id" | "owned_by">) => {
+    const newBook = Book(
+      Math.max(...books.map(b => b.id)) + 1,
+      bookData.title,
+      bookData.author,
+      bookData.year
+    );
+    setBooks([...books, newBook]);
+  };
+
   return (
     <div className="p-8">
       <LibraryComponent 
@@ -43,6 +53,7 @@ export default function Home() {
         owners={owners}
         onBorrow={borrowBook}
         onReturn={returnBook}
+        onAddBook={addBook}
       />
       
       <div className="mt-12">
