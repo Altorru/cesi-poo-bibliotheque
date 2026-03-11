@@ -1,0 +1,66 @@
+'use client';
+
+import { useState } from "react";
+import { Book } from "@/components/book";
+import { LibraryComponent } from "@/components/library";
+import { Owner, OwnerComponent } from "@/components/owner";
+
+const initialBooks = [
+  Book(1, "The Great Gatsby", "F. Scott Fitzgerald", 1925),
+  Book(2, "To Kill a Mockingbird", "Harper Lee", 1960),
+  Book(3, "1984", "George Orwell", 1949),
+  Book(4, "Pride and Prejudice", "Jane Austen", 1813),
+  Book(5, "The Catcher in the Rye", "J.D. Salinger", 1951)
+];
+
+const owners = [
+  Owner(1, "Alice Dupont"),
+  Owner(2, "Bob Martin")
+];
+
+export default function Home() {
+  const [books, setBooks] = useState(initialBooks);
+
+  const borrowBook = (bookId: number, owner: Owner) => {
+    setBooks(books.map(book => 
+      book.id === bookId ? { ...book, owned_by: owner } : book
+    ));
+  };
+
+  const returnBook = (bookId: number) => {
+    setBooks(books.map(book => 
+      book.id === bookId ? { ...book, owned_by: null } : book
+    ));
+  };
+
+  return (
+    <div className="p-8">
+      <LibraryComponent 
+        library={{
+          name: "Magnifique Bibliothèque",
+          books: books
+        }} 
+        owners={owners}
+        onBorrow={borrowBook}
+        onReturn={returnBook}
+      />
+      
+      <div className="mt-12">
+        <h2 className="text-2xl text-center mb-6">Propriétaires et leurs livres</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {owners.map(owner => {
+            const ownerBooks = books.filter(book => book.owned_by?.id === owner.id);
+            return (
+              <OwnerComponent 
+                key={owner.id} 
+                owner={owner} 
+                books={ownerBooks}
+                onReturn={returnBook}
+              />
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
