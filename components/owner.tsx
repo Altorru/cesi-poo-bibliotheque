@@ -18,7 +18,7 @@ interface OwnerComponentProps {
 
 export const OwnerComponent: React.FC<OwnerComponentProps> = ({ owner, books, onReturn }) => {
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-lg shadow-lg text-black">
+    <div className="bg-linear-to-br from-blue-50 to-purple-50 p-6 rounded-lg shadow-lg text-black">
       <h2 className="text-2xl text-center font-bold mb-4">{owner.name}</h2>
       {books.length === 0 ? (
         <p className="text-center text-gray-500 italic">Aucun livre emprunté</p>
