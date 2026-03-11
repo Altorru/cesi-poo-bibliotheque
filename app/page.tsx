@@ -43,6 +43,10 @@ export default function Home() {
     setBooks([...books, newBook]);
   };
 
+  const deleteBook = (bookId: number) => {
+    setBooks(books.filter(book => book.id !== bookId));
+  };
+
   return (
     <div className="p-8">
       <LibraryComponent 
@@ -54,6 +58,7 @@ export default function Home() {
         onBorrow={borrowBook}
         onReturn={returnBook}
         onAddBook={addBook}
+        onDelete={deleteBook}
       />
     </div>
   );

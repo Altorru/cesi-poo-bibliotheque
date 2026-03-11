@@ -16,6 +16,7 @@ interface LibraryComponentProps {
   onBorrow?: (bookId: number, owner: Owner) => void;
   onReturn?: (bookId: number) => void;
   onAddBook?: (book: Omit<Book, "id" | "owned_by">) => void;
+  onDelete?: (bookId: number) => void;
 }
 
 export const LibraryComponent: React.FC<LibraryComponentProps> = ({
@@ -24,6 +25,7 @@ export const LibraryComponent: React.FC<LibraryComponentProps> = ({
   onBorrow,
   onReturn,
   onAddBook,
+  onDelete,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -70,6 +72,7 @@ export const LibraryComponent: React.FC<LibraryComponentProps> = ({
                   owners={owners}
                   onBorrow={onBorrow}
                   onReturn={onReturn}
+                  onDelete={onDelete}
                 />
               ))}
             </div>
@@ -92,6 +95,7 @@ export const LibraryComponent: React.FC<LibraryComponentProps> = ({
                   owners={owners}
                   onBorrow={onBorrow}
                   onReturn={onReturn}
+                  onDelete={onDelete}
                 />
               ))}
             </div>
